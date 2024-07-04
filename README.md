@@ -24,8 +24,8 @@ The following properties are set and can be modified by changing the initial sec
 
 ```
 bootstrap_servers = "redpanda-0:9092"
-topic_name = "orders"
-num_messages = 100
+topic_name = ["customers", "pizza-orders", "products"]
+num_messages = 1000
 messageDelaySeconds = 2
 ```
 
