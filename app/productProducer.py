@@ -12,7 +12,7 @@ def produceProduct(orderId = 1, fake=Faker()):
             "price": round(random.uniform(0.01, 1000), 2)
     }
 
-    return key, message
+    return {key : message}
 
 # # test and print the output
 # customer_records = [produceProduct() for _ in range(2)]
