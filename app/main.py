@@ -11,12 +11,13 @@ from productProducer import produceProduct
 
 import json
 import time
+import os
 
 # --- Define Inputs ---
-bootstrap_servers = "redpanda-0:9092"
+bootstrap_servers = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:19092')
 topic_names = ["customers", "pizza-orders", "products"]
-num_messages = 1000
-messageDelaySeconds = 2
+max_messages = os.getenv('MAX_MESSAGES', 1000)
+messageDelaySeconds = os.getenv('MESSAGE_DELAY_SECONDS', 2)
 
 
 # --- Define producer ---
@@ -60,7 +61,7 @@ fake.add_provider(provider)
 # --- Create the stream ---
 counter = 0
 
-while counter < num_messages:
+while counter < max_messages:
     
     key0, message0 = produceCustomer(counter, fake)
     key1, message1 = producePizzaOrder(counter, fake)
@@ -88,8 +89,10 @@ while counter < num_messages:
     
     time.sleep(messageDelaySeconds)
 
-    if (counter % num_messages) == 0:
+    if (counter % max_messages) == 0:
         producer.flush()
     counter = counter + 1
 
 producer.flush()
+
+print(f"Max messages ({max_messages}) reached, stopping producer.")
