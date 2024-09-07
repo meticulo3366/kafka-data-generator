@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   redpanda-0:
     # a local Kafka
@@ -37,14 +35,17 @@ services:
   
   data-generator:
     # this data generator
-    image: stuzanne/kafka-data-generator:0.3
-    restart: always
+    image: stuzanne/kafka-data-generator:0.4
+    container_name: data-gen-0
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "redpanda-0:9092"
     depends_on:
       - redpanda-0
   
-  conduktor-platform:
+  conduktor-console:
     # a UI into Kafka from Conduktor
-    image: conduktor/conduktor-platform:1.20.0
+    image: conduktor/conduktor-console:1.26.0
+    container_name: conduktor-console-0
     depends_on:
       - postgresql
       - redpanda-0
@@ -65,6 +66,7 @@ services:
     # needed for the Conduktor UI 
     image: postgres:14
     hostname: postgresql
+    container_name: postgresql-0
     volumes:
       - pg_data:/var/lib/postgresql/data
     environment:
