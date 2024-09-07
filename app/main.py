@@ -16,7 +16,7 @@ from productProducer import produceProduct
 # --- Define Inputs ---
 bootstrap_servers = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:19092')
 topic_names = ["customers", "pizza-orders", "products"]
-max_batches = int(os.getenv('MAX_BATCHES', 1000))
+max_batches = int(os.getenv('MAX_BATCHES', 500))
 messageDelaySeconds = float(os.getenv('MESSAGE_DELAY_SECONDS', 2))
 
 

@@ -23,7 +23,7 @@ The configuration can be changed by setting environment variables.
 | Name                      | Default           | Description                                                                                             |
 | ------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------- |
 | `KAFKA_BOOTSTRAP_SERVERS` | `localhost:19092` | The bootstrap server(s) for your Kafka cluster.                                                         |
-| `MAX_BATCHES`             | 1000              | The max batches of 3 messages (1 for each of the 3 topics) to produce, stops the producer once reached. |
+| `MAX_BATCHES`             | 500              | The max batches of 3 messages (1 for each of the 3 topics) to produce, stops the producer once reached. |
 | `MESSAGE_DELAY_SECONDS`   | 2                 | The wait time between producing messages, in seconds.                                                   |
 
 The app is published on [Dockerhub](https://hub.docker.com/r/stuzanne/kafka-data-generator).
