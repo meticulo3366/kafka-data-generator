@@ -35,3 +35,32 @@ def set_max_size(admin, topic, max_k):
     result_dict = admin.alter_configs([resource]) # deprecated
     # result_dict = admin.incremental_alter_configs([resource])
     result_dict[resource].result()
+
+def callback(err, event):
+    """
+    Delivery report callback for Kafka producer events.
+
+    This function is called once a message is delivered (or failed to be delivered) 
+    to a Kafka topic. It handles successful delivery or errors by printing the relevant 
+    information about the message and the topic.
+
+    Parameters:
+    ----------
+    err : KafkaError or None
+        The error object, if there was a failure in delivering the message. If `None`, the delivery was successful.
+    event : Kafka event object
+        The event object representing the message that was sent. Contains details like key, value, topic, and partition.
+
+    Behavior:
+    --------
+    - If an error occurs (i.e., `err` is not None), it logs the failure message including the topic and event key.
+    - If the message is successfully delivered, it logs the key, value (decoded to UTF-8), and the topic partition.
+    - Note: Avro-encoded messages may not be fully represented by the decoded value without proper deserialization.
+    """
+
+    if err:
+        print(f'Produce to topic {event.topic()} failed for event: {event.key()}')
+    else:
+        key = event.key().decode('utf-8')
+        val = event.value().decode('utf8') # won't give full picture for Avro without proper deserializer
+        print(f'key:{key} : value:{val} | Sent to \'{event.topic()}\' partition: {event.partition()}.')

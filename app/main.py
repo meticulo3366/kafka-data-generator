@@ -6,7 +6,7 @@ from faker import Faker
 from confluent_kafka import Producer, KafkaException
 from confluent_kafka.admin import AdminClient
 
-from adminTools import topic_exists, create_topic
+from adminTools import topic_exists, create_topic, callback
 from pizzaProducer import PizzaProvider
 from orderProducer import producePizzaOrder
 from customerProducer import produceCustomer
@@ -63,10 +63,11 @@ while counter < max_batches:
         encoded_key = key.encode('utf-8')
         message = json.dumps(payload[key])
         encoded_message = message.encode('utf-8')
-        producer.produce(topic = topic_names[i], value = encoded_message, key = encoded_key)
-        print(f'{key}:{message}\n')
+        producer.produce(topic = topic_names[i], value = encoded_message, key = encoded_key, on_delivery=callback)
+        print(f'\n')
         
     time.sleep(messageDelaySeconds)
+
 
     if (counter % max_batches) == 0:
         producer.flush()
