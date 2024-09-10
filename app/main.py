@@ -6,7 +6,7 @@ from faker import Faker
 from confluent_kafka import Producer, KafkaException
 from confluent_kafka.admin import AdminClient
 
-from adminTools import topic_exists, create_topic
+from adminTools import topic_exists, create_topic, callback
 from pizzaProducer import PizzaProvider
 from orderProducer import producePizzaOrder
 from customerProducer import produceCustomer
@@ -15,8 +15,9 @@ from productProducer import produceProduct
 
 # --- Define Inputs ---
 bootstrap_servers = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:19092')
-topic_names = ["customers", "pizza-orders", "products"]
-max_batches = int(os.getenv('MAX_BATCHES', 1000))
+topic_names = os.getenv('TOPICS', "customers,pizza-orders,products").split(',')
+topic_names = [topic.strip() for topic in topic_names] #Strip any extra whitespace
+max_batches = int(os.getenv('MAX_BATCHES', 500))
 messageDelaySeconds = float(os.getenv('MESSAGE_DELAY_SECONDS', 2))
 
 
@@ -49,12 +50,12 @@ fake.add_provider(provider)
 counter = 0
 
 while counter < max_batches:
-    for i in range(3):
-        if i == 0:
+    for topic in topic_names:
+        if topic == 'customers':
             payload = produceCustomer()
-        elif i == 1:
+        elif topic == 'pizza-orders':
             payload = producePizzaOrder(counter, fake)
-        elif i == 2:
+        elif topic == 'products':
             payload = produceProduct()
         else:
             exit()
@@ -63,8 +64,9 @@ while counter < max_batches:
         encoded_key = key.encode('utf-8')
         message = json.dumps(payload[key])
         encoded_message = message.encode('utf-8')
-        producer.produce(topic = topic_names[i], value = encoded_message, key = encoded_key)
-        print(f'{key}:{message}\n')
+        producer.produce(topic = topic, value = encoded_message, key = encoded_key, on_delivery=callback)
+        producer.flush()
+        print(f'')
         
     time.sleep(messageDelaySeconds)
 
