@@ -70,7 +70,6 @@ while counter < max_batches:
         
     time.sleep(messageDelaySeconds)
 
-
     if (counter % max_batches) == 0:
         producer.flush()
     
