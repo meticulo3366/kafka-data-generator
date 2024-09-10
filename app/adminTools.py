@@ -11,7 +11,7 @@ def topic_exists(admin, topic):
 
 # create new topic and return results dictionary
 def create_topic(admin, topic):
-    new_topic = NewTopic(topic, num_partitions=6, replication_factor=3) 
+    new_topic = NewTopic(topic, num_partitions=3, replication_factor=1) 
     result_dict = admin.create_topics([new_topic])
     for topic, future in result_dict.items():
         try:

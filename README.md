@@ -20,10 +20,11 @@ Run `docker compose up -d` and navigate to [localhost:8080](http://localhost:808
 
 The configuration can be changed by setting environment variables.
 
-| Name                      | Default           | Description                                                                                             |
-| ------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------- |
-| `KAFKA_BOOTSTRAP_SERVERS` | `localhost:19092` | The bootstrap server(s) for your Kafka cluster.                                                         |
-| `MAX_BATCHES`             | 500              | The max batches of 3 messages (1 for each of the 3 topics) to produce, stops the producer once reached. |
-| `MESSAGE_DELAY_SECONDS`   | 2                 | The wait time between producing messages, in seconds.                                                   |
+| Name                      | Default                           | Description                                                                                             |
+| ------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `KAFKA_BOOTSTRAP_SERVERS` | `localhost:19092`                 | The bootstrap server(s) for your Kafka cluster.                                                         |
+| `MAX_BATCHES`             | 500                               | The max batches of 3 messages (1 for each of the 3 topics) to produce, stops the producer once reached. |
+| `MESSAGE_DELAY_SECONDS`   | 2                                 | The wait time between producing messages, in seconds.                                                   |
+| `TOPICS`                  | `customers,pizza-orders,products` | Customise which of the 3 topics to use, e.g. if you only want to produce to pizza-orders then set this. |
 
 The app is published on [Dockerhub](https://hub.docker.com/r/stuzanne/kafka-data-generator).
