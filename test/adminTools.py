@@ -67,3 +67,57 @@ def callback(err, event):
         key = event.key().decode('utf-8')
         val = event.value().decode('utf8') # won't give full picture for Avro without proper deserializer
         print(f'key:{key} : value:{val} | Sent to \'{event.topic()}\' partition: {event.partition()}.')
+
+import json
+import subprocess
+
+def register_schema(schema_registry_url: str, subject_name: str, schema_file_path: str, serialization: str = 'avro'):
+    '''
+    Register a schema with schema registry.
+    Serialization only needed if JSON, assumes AVRO.
+    '''
+    # Read the schema from the file
+    with open(schema_file_path, 'r') as schema_file:
+        schema_str = schema_file.read()
+    
+    if serialization == 'json':
+        schema_type = 'JSON'
+    else:
+        schema_type = 'AVRO'
+
+    payload = {
+        "schemaType": schema_type,
+        "schema": schema_str
+
+    }
+
+    # Prepare the curl command
+    curl_command = [
+        "curl",
+        "-X", "POST",
+        "-H", "Content-Type: application/vnd.schemaregistry.v1+json",
+        "-d", json.dumps(payload),
+        "-w", "%{http_code}",  # Write the HTTP status code to stdout
+        "-s",  # Silent mode (don't show progress meter or error messages)
+        "-o", "-",  # Write response body to stdout
+        f"{schema_registry_url}/subjects/{subject_name}/versions"
+    ]
+    
+    # Execute the curl command
+    result = subprocess.run(curl_command, capture_output=True, text=True)
+
+    # Print the response
+    http_status_code = result.stdout[-3:].strip()
+    response_body = result.stdout[:-3].strip()
+
+    print("HTTP Status Code:", http_status_code)
+    print("Response Code:", result.returncode)
+    print("Response Body:", response_body)
+    print("Response Error:", result.stderr)
+
+    # # Example usage
+    # schema_registry_url = "http://localhost:8084"
+    # subject_name = "cars-value2"
+    # schema_file_path = "./schemas/cars.avsc"
+
+    # register_schema(schema_registry_url, subject_name, schema_file_path)
