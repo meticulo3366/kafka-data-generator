@@ -1,7 +1,7 @@
 services:
   data-generator:
     # this data generator
-    image: stuzanne/kafka-data-generator:0.5
+    image: stuzanne/kafka-data-generator:0.6
     container_name: data-gen-0
     environment:
       KAFKA_BOOTSTRAP_SERVERS: 'redpanda-0:9092'
