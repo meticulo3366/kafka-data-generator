@@ -7,6 +7,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     gcc \
+    libsasl2-modules-gssapi-mit \
+    libsasl2-dev \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Install requirements

@@ -1,0 +1,23 @@
+services:
+  data-generator:
+    # this data generator
+    image: kafka-data-generator:0.7
+    container_name: data-gen-0
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
+      CLUSTER_SIZING: 'small'
+      KAFKA_PASSWORD: ${KAFKA_PASSWORD}
+      KAFKA_USERNAME: ${KAFKA_USERNAME}
+      KAFKA_PEM_FILE: ${KAFKA_PEM_FILE}
+    volumes:
+      # - type: bind
+      #   source: "/Users/zekedean/code/cs-playground/demo-partner-cloudera/security"
+      #   target: /security
+      - type: bind
+        source: "${KAFKA_PEM_FILE}"
+        target: /cert.pem
+
+
+networks:
+  default:
+    name: sni-demo.local

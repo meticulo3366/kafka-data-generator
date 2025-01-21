@@ -50,6 +50,12 @@ if cluster_sizing == 'small':
 
 config = {
     'bootstrap.servers': bootstrap_servers,
+    'enable.ssl.certificate.verification': False,
+    'sasl.mechanism': 'PLAIN',
+    'security.protocol': 'SASL_SSL',
+    'sasl.username': os.getenv('KAFKA_USERNAME'),
+    'sasl.password': os.getenv('KAFKA_PASSWORD'),  # Retrieve securely
+    'ssl.ca.location': '/cert.pem'  # Path to CA certificate in PEM format
 }
 
 schema_registry_conf = {'url': schema_registry_url, 'basic.auth.user.info': '<SR_UserName:SR_Password>'}
@@ -69,6 +75,7 @@ else:
     serializer = create_serializer(serialization, None, None)
 
 # Instantiate Kafka producer and admin client
+print(config)
 producer = Producer(config)
 
 admin_client = AdminClient(config)
