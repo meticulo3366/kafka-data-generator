@@ -10,9 +10,6 @@ services:
       KAFKA_USERNAME: ${KAFKA_USERNAME}
       KAFKA_PEM_FILE: ${KAFKA_PEM_FILE}
     volumes:
-      # - type: bind
-      #   source: "/Users/zekedean/code/cs-playground/demo-partner-cloudera/security"
-      #   target: /security
       - type: bind
         source: "${KAFKA_PEM_FILE}"
         target: /cert.pem

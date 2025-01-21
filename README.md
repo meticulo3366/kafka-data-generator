@@ -3,7 +3,26 @@ A data generator into Kafka.
 
 A simple app for producing sample data into Kafka on three topics, `customers`, `products` and `pizza-orders`. A supporting docker-compose in this repo, includes a local Kafka and UI to see into Kafka.
 
-# Get Started
+
+## Running the stand alone data generator
+
+#### First set up a .env file with all of your environment variables for the below key settings
+
+| Name                       |     Description                                                                                                                               |
+| ---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `KAFKA_BOOTSTRAP_SERVERS`  |     The bootstrap server(s) for your Kafka cluster.                                                                                           |
+| `KAFKA_PASSWORD`           |URL for the Schema Registry service.                                                                                                      |
+| `KAFKA_USERNAME`            |     Defines the serialization method for messages. You will need to add a schema to the schema registry for this. `avro` or `json` supported. |
+| `KAFKA_PEM_FILE`            |     Location of the schema definition. `remote` or `local` if using a local |
+| ---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------- |
+
+#### Next, run the stand alone demo
+
+```
+docker compose -f standalone-datagen.yml 
+```
+
+## Get Started (conduktor demo)
 
 Run `docker compose up -d` and navigate to [localhost:8080](http://localhost:8080) to see the Kafka topic with pizza order data using the Conduktor UI.
 
