@@ -11,10 +11,10 @@ A simple app for producing sample data into Kafka on three topics, `customers`, 
 | Name                       |     Description                                                                                                                               |
 | ---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------- |
 | `KAFKA_BOOTSTRAP_SERVERS`  |     The bootstrap server(s) for your Kafka cluster.                                                                                           |
-| `KAFKA_PASSWORD`           |URL for the Schema Registry service.                                                                                                      |
-| `KAFKA_USERNAME`            |     Defines the serialization method for messages. You will need to add a schema to the schema registry for this. `avro` or `json` supported. |
-| `KAFKA_PEM_FILE`            |     Location of the schema definition. `remote` or `local` if using a local |
-| ---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `KAFKA_PASSWORD`           | the kafka user password                                                                                                      |
+| `KAFKA_USERNAME`            |     the kafka username  |
+| `KAFKA_PEM_FILE`            |     the hardcoded location of the pem file |
+
 
 #### Next, run the stand alone demo
 
